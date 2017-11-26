@@ -44,7 +44,7 @@ module.exports = class extends Base {
     return this.success(values);
   }
 
-  async destoryAction() {
+  async deleteAction() {
     const id = this.post('id');
     await this.model('brand').where({id: id}).limit(1).delete();
     // TODO 删除图片

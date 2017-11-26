@@ -21,28 +21,36 @@ module.exports = class extends Base {
     const model = this.model('goods');
     const data = await model.where({id: id}).find();
 
+    // 取出相册
+    const gallery = await this.model('goods_gallery').where({goods_id: id}).select();
+    data.gallery = gallery.map(item => {
+      item.url = item.img_url;
+      item.name = item.id;
+      return item;
+    });
     return this.success(data);
   }
 
   async storeAction() {
-    if (!this.isPost) {
-      return false;
-    }
-
     const values = this.post();
     const id = this.post('id');
-
     const model = this.model('goods');
-    values.is_on_sale = values.is_on_sale ? 1 : 0;
-    values.is_new = values.is_new ? 1 : 0;
-    values.is_hot = values.is_hot ? 1 : 0;
-    if (id > 0) {
+    const isAdd = id > 0;
+    if (isAdd) {
       await model.where({id: id}).update(values);
     } else {
       delete values.id;
       await model.add(values);
     }
+
     return this.success(values);
+  }
+
+  async galleryDestoryAction() {
+    const id = this.post('id');
+    // 删除文件
+    await this.model('goods_gallery').where({id: id}).limit(1).delete();
+    return this.success();
   }
 
   async destoryAction() {
