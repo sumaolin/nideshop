@@ -12,16 +12,16 @@ module.exports = class extends Base {
     const topCategory = data.filter((item) => {
       return item.parent_id === 0;
     });
-    const categoryList = [];
-    topCategory.map((item) => {
-      item.level = 1;
-      categoryList.push(item);
+    const categoryList = topCategory.map((item) => {
       data.map((child) => {
         if (child.parent_id === item.id) {
-          child.level = 2;
-          categoryList.push(child);
+          if (!item.children) {
+            item.children = [];
+          }
+          item.children.push(child);
         }
       });
+      return item;
     });
     return this.success(categoryList);
   }

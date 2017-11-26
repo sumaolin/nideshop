@@ -21,6 +21,13 @@ module.exports = class extends Base {
     const model = this.model('goods');
     const data = await model.where({id: id}).find();
 
+    // 取出相册
+    const gallery = await this.model('goods_gallery').where({goods_id: id}).select();
+    data.gallery = gallery.map(item => {
+      item.url = item.img_url;
+      item.name = item.id;
+      return item;
+    });
     return this.success(data);
   }
 
@@ -43,6 +50,13 @@ module.exports = class extends Base {
       await model.add(values);
     }
     return this.success(values);
+  }
+
+  async galleryDestoryAction() {
+    const id = this.post('id');
+    // 删除文件
+    await this.model('goods_gallery').where({id: id}).limit(1).delete();
+    return this.success();
   }
 
   async destoryAction() {
