@@ -1,8 +1,8 @@
-const fileCache = require('think-cache-file');
-const mysql = require('think-model-mysql');
-const {Console, File, DateFile} = require('think-logger3');
-const path = require('path');
-const isDev = think.env === 'development';
+const fileCache = require('think-cache-file')
+const mysql = require('think-model-mysql')
+const { Console, File, DateFile } = require('think-logger3')
+const path = require('path')
+const isDev = think.env === 'development'
 
 /**
  * cache adapter config
@@ -19,7 +19,7 @@ exports.cache = {
     pathDepth: 1,
     gcInterval: 24 * 60 * 60 * 1000 // gc interval
   }
-};
+}
 
 /**
  * model adapter config
@@ -40,10 +40,10 @@ exports.model = {
     host: '127.0.0.1',
     port: '3306',
     user: 'root',
-    password: 'root',
+    password: 'km-sumaolin',
     dateStrings: true
   }
-};
+}
 
 /**
  * logger adapter config
@@ -69,4 +69,4 @@ exports.logger = {
     alwaysIncludePattern: true,
     filename: path.join(think.ROOT_PATH, 'logs/app.log')
   }
-};
+}
